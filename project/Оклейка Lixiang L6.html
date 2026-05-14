@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Оклейка плёнкой — Lixiang L6</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="cfg-images.js"></script>
+<script src="deck-stage.js"></script>
+<style>
+:root {
+  --font: 'Barlow', 'Helvetica Neue', Helvetica, sans-serif;
+  --type-display: 96px;
+  --type-title: 72px;
+  --type-sub: 44px;
+  --type-body: 32px;
+  --type-small: 26px;
+  --type-label: 20px;
+  --pad-x: 100px;
+  --pad-y: 84px;
+  --gap: 36px;
+  --gap-sm: 20px;
+  --bg: #0a0a0c;
+  --bg2: #111114;
+  --bg3: #1a1a1e;
+  --card: #222228;
+  --gold: oklch(72% 0.10 72);
+  --gold-dim: oklch(55% 0.07 72);
+  --text: #f0eeea;
+  --muted: #888880;
+  --muted2: #44444a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+section {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  width: 100%; height: 100%;
+  overflow: hidden;
+}
+
+/* ── UTILITY ── */
+.lbl {
+  font-size: var(--type-label);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.lbl-line {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.lbl-line::before {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 2px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+.muted { color: var(--muted); }
+
+/* ── SWATCH PANEL (color slides) ── */
+.color-slide {
+  display: flex;
+  width: 100%; height: 100%;
+}
+.swatch-panel {
+  flex: 0 0 52%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.swatch-half {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 36px 52px;
+  position: relative;
+  overflow: hidden;
+}
+.swatch-half .shine {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 28% 18%, rgba(255,255,255,0.22) 0%, transparent 55%);
+  pointer-events: none;
+}
+.swatch-half .divider {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: rgba(0,0,0,0.25);
+}
+.swatch-type {
+  font-size: var(--type-label);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+}
+.swatch-film {
+  font-size: 19px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ── CONTENT PANEL ── */
+.content-panel {
+  flex: 0 0 48%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--pad-y) var(--pad-x);
+  background: var(--bg);
+}
+.color-name {
+  font-size: var(--type-display);
+  font-weight: 200;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  margin: 22px 0 22px;
+}
+.color-desc {
+  font-size: var(--type-body);
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+.tag {
+  padding: 9px 22px;
+  border: 1px solid var(--muted2);
+  border-radius: 100px;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.tag--hi {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ── PRICE TABLE ── */
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.price-table th {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: left;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--muted2);
+}
+.price-table td {
+  font-size: var(--type-small);
+  font-weight: 300;
+  color: var(--text);
+  padding: 18px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  vertical-align: middle;
+}
+.price-table tr:last-child td { border-bottom: none; }
+.price-table .price-val {
+  font-size: var(--type-body);
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text);
+}
+.price-table .note {
+  font-size: 20px;
+  color: var(--muted);
+  font-weight: 300;
+}
+.price-table tr.hi-row td { background: rgba(255,255,255,0.03); }
+
+/* ── MISC ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+}
+.pros-card {
+  background: var(--bg3);
+  border-radius: 16px;
+  padding: 48px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.pros-card h3 {
+  font-size: var(--type-sub);
+  font-weight: 300;
+}
+.pros-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pros-list li {
+  font-size: var(--type-small);
+  font-weight: 300;
+  color: var(--muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  line-height: 1.45;
+}
+.pros-list li::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin-top: 9px;
+  flex-shrink: 0;
+}
+.rec-num {
+  font-size: 120px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--muted2);
+  letter-spacing: -0.04em;
+}
+</style>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+<!-- ══════════════ 01 TITLE ══════════════ -->
+<section data-screen-label="01 Title" style="position:relative;">
+  <!-- Car image right side -->
+  <div style="position:absolute;right:0;top:0;width:58%;height:100%;
+    background:#13131a;overflow:hidden;">
+    <img src="uploads/Screenshot_20260514_104117_Chrome.jpg"
+      style="position:absolute;inset:0;width:100%;height:100%;
+        object-fit:contain;object-position:center 55%;
+        mix-blend-mode:luminosity;opacity:0.7;">
+    <!-- gradient overlay left edge -->
+    <div style="position:absolute;inset:0;
+      background:linear-gradient(to right, var(--bg) 0%, transparent 30%);"></div>
+    <!-- gradient top and bottom -->
+    <div style="position:absolute;inset:0;
+      background:linear-gradient(to bottom, var(--bg) 0%, transparent 15%, transparent 80%, var(--bg) 100%);"></div>
+  </div>
+
+  <!-- Left text -->
+  <div style="position:absolute;left:0;top:0;width:50%;height:100%;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:var(--pad-y) var(--pad-x);">
+    <div class="lbl" style="margin-bottom:48px;">Lixiang L6 · Москва, 2026</div>
+    <div style="font-size:28px;font-weight:200;letter-spacing:0.05em;
+      color:var(--muted);text-transform:uppercase;margin-bottom:16px;">
+      Смена образа
+    </div>
+    <div style="font-size:102px;font-weight:200;line-height:0.92;
+      letter-spacing:-0.03em;margin-bottom:56px;">
+      Оклейка<br>плёнкой
+    </div>
+    <div style="width:56px;height:2px;background:var(--gold);margin-bottom:40px;"></div>
+    <div style="font-size:var(--type-small);font-weight:300;
+      color:var(--muted);line-height:1.6;max-width:480px;">
+      Варианты смены цвета кузова, двухтоновые решения,
+      антихром и матовые / глянцевые плёнки.<br>
+      Реальные цены для Lixiang L6 в Москве.
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:72px;
+    border-top:1px solid var(--muted2);
+    display:flex;align-items:center;padding:0 var(--pad-x);
+    justify-content:space-between;">
+    <span style="font-size:22px;font-weight:300;color:var(--muted);letter-spacing:0.06em;">
+      Исходник: Чёрный металлик · Чёрные диски
+    </span>
+    <span style="font-size:22px;font-weight:300;color:var(--muted);">
+      7 вариантов · Цены актуальны на май 2026
+    </span>
+  </div>
+</section>
+
+<!-- ══════════════ 02 ТЕКУЩАЯ КОНФИГУРАЦИЯ ══════════════ -->
+<section data-screen-label="02 Исходник" style="position:relative;">
+  <!-- background image fill -->
+  <div style="position:absolute;inset:0;overflow:hidden;">
+    <img src="uploads/Screenshot_20260514_104123_Chrome.jpg"
+      style="position:absolute;right:-60px;bottom:-20px;
+        width:72%;height:100%;
+        object-fit:contain;object-position:right bottom;
+        mix-blend-mode:luminosity;opacity:0.55;">
+    <div style="position:absolute;inset:0;
+      background:linear-gradient(to right, var(--bg) 38%, rgba(10,10,12,0.5) 70%, rgba(10,10,12,0.2) 100%);"></div>
+    <div style="position:absolute;inset:0;
+      background:linear-gradient(to bottom, var(--bg) 0%, transparent 18%, transparent 75%, var(--bg) 100%);"></div>
+  </div>
+
+  <div style="position:absolute;top:var(--pad-y);left:var(--pad-x);
+    display:flex;flex-direction:column;gap:var(--gap);">
+    <div class="lbl-line lbl">Исходная конфигурация</div>
+    <div style="font-size:var(--type-title);font-weight:200;
+      letter-spacing:-0.02em;line-height:1.1;max-width:680px;">
+      Чёрный металлик<br>на чёрных дисках
+    </div>
+    <div style="font-size:var(--type-small);font-weight:300;
+      color:var(--muted);line-height:1.6;max-width:540px;">
+      Заводской цвет — Black / Obsidian.<br>
+      Хромированные молдинги и окантовка.
+      Отличная база для оклейки — тёмный кузов скрывает
+      края плёнки.
+    </div>
+  </div>
+
+  <!-- callout cards bottom left -->
+  <div style="position:absolute;bottom:var(--pad-y);left:var(--pad-x);
+    display:flex;gap:24px;">
+    <div style="background:rgba(255,255,255,0.05);border:1px solid var(--muted2);
+      border-radius:12px;padding:24px 32px;">
+      <div class="lbl" style="margin-bottom:8px;">Кузов</div>
+      <div style="font-size:var(--type-small);font-weight:300;">Чёрный металлик</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid var(--muted2);
+      border-radius:12px;padding:24px 32px;">
+      <div class="lbl" style="margin-bottom:8px;">Диски</div>
+      <div style="font-size:var(--type-small);font-weight:300;">19″ Чёрные</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid var(--muted2);
+      border-radius:12px;padding:24px 32px;">
+      <div class="lbl" style="margin-bottom:8px;">Хром</div>
+      <div style="font-size:var(--type-small);font-weight:300;">Молдинги, рамки окон</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid var(--muted2);
+      border-radius:12px;padding:24px 32px;">
+      <div class="lbl" style="margin-bottom:8px;">Площадь кузова</div>
+      <div style="font-size:var(--type-small);font-weight:300;">≈ 18–20 м²</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 03 СЕРЕБРИСТЫЙ ══════════════ -->
+<section data-screen-label="03 Серебристый" class="color-slide">
+  <div class="swatch-panel">
+    <!-- matte top -->
+    <div class="swatch-half"
+      style="background:oklch(64% 0.008 240);">
+      <div class="swatch-type">Матовый</div>
+      <div class="swatch-film">IRISTEK Matte Silver · Oracal 970 Matte</div>
+    </div>
+    <!-- gloss bottom -->
+    <div class="swatch-half"
+      style="background:oklch(73% 0.012 235);">
+      <div class="shine"></div>
+      <div class="divider"></div>
+      <div class="swatch-type">Глянцевый</div>
+      <div class="swatch-film">KPMF K75400 Gloss Aluminium · 3M 1080 Gloss Silver</div>
+    </div>
+  </div>
+
+  <div class="content-panel">
+    <div class="lbl-line lbl">Вариант 01 / 04</div>
+    <div class="color-name">Серебристый</div>
+    <div class="color-desc">
+      Классика среди владельцев тёмных автомобилей.
+      Серебро на чёрных дисках даёт чёткий контраст
+      и выглядит как заводской вариант от производителя.
+    </div>
+    <div class="tag-row">
+      <span class="tag tag--hi">★ Популярный</span>
+      <span class="tag">Нейтральный</span>
+      <span class="tag">Легко обслуживать</span>
+      <span class="tag">Глянец — практичнее</span>
+    </div>
+    <div style="margin-top:40px;font-size:22px;font-weight:300;color:var(--muted);">
+      Плёнка PPF (полиуретан): до 10 лет · Винил: 5–7 лет
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 04 СЕРЫЙ ══════════════ -->
+<section data-screen-label="04 Серый" class="color-slide">
+  <div class="swatch-panel">
+    <div class="swatch-half"
+      style="background:oklch(38% 0.007 240);">
+      <div class="swatch-type">Матовый</div>
+      <div class="swatch-film">KPMF K75521 Matte Stone Grey · Oracal 970 Matte Charcoal</div>
+    </div>
+    <div class="swatch-half"
+      style="background:oklch(46% 0.010 240);">
+      <div class="shine"></div>
+      <div class="divider"></div>
+      <div class="swatch-type">Глянцевый</div>
+      <div class="swatch-film">3M 1080 Gloss Storm Grey · IRISTEK Gloss Urban Grey</div>
+    </div>
+  </div>
+
+  <div class="content-panel">
+    <div class="lbl-line lbl">Вариант 02 / 04</div>
+    <div class="color-name">Серый</div>
+    <div class="color-desc">
+      Современный, сдержанный образ. Серый сатин —
+      эталонное сочетание с чёрными дисками и антихромом.
+      Близок к заводскому «Серому слону» из палитры Lixiang.
+    </div>
+    <div class="tag-row">
+      <span class="tag tag--hi">★ Рекомендуемый</span>
+      <span class="tag">Тренд 2025–26</span>
+      <span class="tag">Хорош с антихромом</span>
+    </div>
+    <div style="margin-top:40px;font-size:22px;font-weight:300;color:var(--muted);">
+      Серый сатин + антихром = эталонный стилинг для L6
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 05 ТЁМНО-ЗЕЛЁНЫЙ ══════════════ -->
+<section data-screen-label="05 Темно-зелёный" class="color-slide">
+  <div class="swatch-panel">
+    <div class="swatch-half"
+      style="background:oklch(24% 0.065 155);">
+      <div class="swatch-type" style="color:rgba(255,255,255,0.45);">Матовый</div>
+      <div class="swatch-film" style="color:rgba(255,255,255,0.28);">KPMF K75479 Matte Forest Green · Hexis Matte Deep Green</div>
+    </div>
+    <div class="swatch-half"
+      style="background:oklch(30% 0.08 155);">
+      <div class="shine"></div>
+      <div class="divider"></div>
+      <div class="swatch-type" style="color:rgba(255,255,255,0.45);">Глянцевый</div>
+      <div class="swatch-film" style="color:rgba(255,255,255,0.28);">Avery SW900 Gloss Dark Green · 3M 1080 Satin Dark Forest</div>
+    </div>
+  </div>
+
+  <div class="content-panel">
+    <div class="lbl-line lbl">Вариант 03 / 04</div>
+    <div class="color-name" style="font-size:80px;">Тёмно-<br>зелёный</div>
+    <div class="color-desc">
+      Один из самых модных оттенков сезона.
+      Глубокий лесной зелёный — редкость на дорогах,
+      при этом не кричащий. Матовый вариант выглядит
+      особенно дорого.
+    </div>
+    <div class="tag-row">
+      <span class="tag tag--hi">Трендовый</span>
+      <span class="tag">Редкий на дорогах</span>
+      <span class="tag">Матовый — лучший вариант</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 06 ТЁМНО-ФИОЛЕТОВЫЙ ══════════════ -->
+<section data-screen-label="06 Темно-фиолетовый" class="color-slide">
+  <div class="swatch-panel">
+    <div class="swatch-half"
+      style="background:oklch(20% 0.09 285);">
+      <div class="swatch-type" style="color:rgba(255,255,255,0.4);">Матовый</div>
+      <div class="swatch-film" style="color:rgba(255,255,255,0.25);">Hexis Matte Dark Violet · Oracal 970 Matte Deep Purple</div>
+    </div>
+    <div class="swatch-half"
+      style="background:oklch(27% 0.13 285);">
+      <div class="shine"></div>
+      <div class="divider"></div>
+      <div class="swatch-type" style="color:rgba(255,255,255,0.4);">Глянцевый</div>
+      <div class="swatch-film" style="color:rgba(255,255,255,0.25);">KPMF K75501 Gloss Purple · 3M 1080 Gloss Royal Purple</div>
+    </div>
+  </div>
+
+  <div class="content-panel">
+    <div class="lbl-line lbl">Вариант 04 / 04</div>
+    <div class="color-name" style="font-size:80px;">Тёмно-<br>фиолетовый</div>
+    <div class="color-desc">
+      Самый смелый вариант из рассматриваемых.
+      Глубокий индиго почти неотличим от чёрного при
+      искусственном освещении, но ярко выражается на солнце.
+      Глянец усиливает глубину цвета.
+    </div>
+    <div class="tag-row">
+      <span class="tag">Редкий</span>
+      <span class="tag">Эффектный на солнце</span>
+      <span class="tag">Глянец — для максимума</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 07 ДВУХТОН ══════════════ -->
+<section data-screen-label="07 Двухтон" style="position:relative;overflow:hidden;">
+  <!-- Two-tone visual bands -->
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;">
+    <div style="flex:0 0 42%;background:oklch(12% 0.005 240);"></div>
+    <div style="flex:0 0 58%;background:oklch(76% 0.008 60);"></div>
+  </div>
+  <!-- Divider line -->
+  <div style="position:absolute;top:42%;left:0;right:0;height:2px;
+    background:linear-gradient(to right, transparent 5%, var(--gold) 20%, var(--gold) 80%, transparent 95%);"></div>
+  <!-- Gradient overlay for readability -->
+  <div style="position:absolute;inset:0;
+    background:linear-gradient(to right, rgba(10,10,12,0.75) 0%, rgba(10,10,12,0.35) 55%, transparent 100%);"></div>
+
+  <div style="position:absolute;top:var(--pad-y);left:var(--pad-x);
+    display:flex;flex-direction:column;gap:var(--gap);">
+    <div class="lbl-line lbl">Двухтоновые варианты</div>
+    <div style="font-size:var(--type-title);font-weight:200;
+      letter-spacing:-0.02em;line-height:1.1;max-width:700px;">
+      Тёмная крыша —<br>светлый кузов
+    </div>
+    <div style="font-size:var(--type-small);font-weight:300;
+      color:rgba(240,238,234,0.7);line-height:1.6;max-width:560px;">
+      Спортивный, контрастный образ. Крыша,
+      стойки и зеркала оклеиваются тёмным цветом,
+      кузов — более светлым. Популярная опция у владельцев
+      L6 и L7 в Москве.
+    </div>
+  </div>
+
+  <!-- Option cards bottom -->
+  <div style="position:absolute;bottom:var(--pad-y);left:var(--pad-x);
+    display:flex;gap:24px;">
+    <div style="background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.12);border-radius:14px;
+      padding:28px 36px;min-width:280px;">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;">
+        <div style="width:28px;height:28px;border-radius:50%;
+          background:oklch(12% 0.005 240);border:1px solid rgba(255,255,255,0.2);"></div>
+        <div style="width:28px;height:28px;border-radius:50%;
+          background:oklch(76% 0.008 60);border:1px solid rgba(255,255,255,0.2);"></div>
+      </div>
+      <div class="lbl" style="margin-bottom:6px;">Вариант A</div>
+      <div style="font-size:var(--type-small);font-weight:400;">Чёрная крыша + Светлый серый</div>
+      <div style="font-size:20px;font-weight:300;color:var(--muted);margin-top:6px;">Сдержанный, практичный</div>
+    </div>
+
+    <div style="background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);
+      border:1px solid var(--gold);border-radius:14px;
+      padding:28px 36px;min-width:280px;">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;">
+        <div style="width:28px;height:28px;border-radius:50%;
+          background:oklch(22% 0.065 155);border:1px solid rgba(255,255,255,0.2);"></div>
+        <div style="width:28px;height:28px;border-radius:50%;
+          background:oklch(80% 0.005 60);border:1px solid rgba(255,255,255,0.2);"></div>
+      </div>
+      <div class="lbl" style="margin-bottom:6px;">Вариант B</div>
+      <div style="font-size:var(--type-small);font-weight:400;">Зелёная крыша + Белый кузов</div>
+      <div style="font-size:20px;font-weight:300;color:var(--muted);margin-top:6px;">Яркий, трендовый</div>
+    </div>
+
+    <div style="background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.12);border-radius:14px;
+      padding:28px 36px;min-width:280px;">
+      <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;">
+        <div style="width:28px;height:28px;border-radius:50%;
+          background:oklch(38% 0.007 240);border:1px solid rgba(255,255,255,0.2);"></div>
+        <div style="width:28px;height:28px;border-radius:50%;
+          background:oklch(88% 0.005 60);border:1px solid rgba(255,255,255,0.2);"></div>
+      </div>
+      <div class="lbl" style="margin-bottom:6px;">Вариант C</div>
+      <div style="font-size:var(--type-small);font-weight:400;">Серая крыша + Белый кузов</div>
+      <div style="font-size:20px;font-weight:300;color:var(--muted);margin-top:6px;">Классический двухтон</div>
+    </div>
+
+    <div style="background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.12);border-radius:14px;
+      padding:28px 36px;min-width:280px;">
+      <div style="margin-bottom:14px;font-size:22px;font-weight:300;color:var(--gold);">Что оклеивается:</div>
+      <div style="font-size:20px;font-weight:300;color:var(--muted);line-height:1.7;">
+        Крыша · Передняя и задняя стойки<br>
+        Зеркала · Спойлер крыши
+      </div>
+      <div style="font-size:20px;font-weight:300;color:var(--gold);margin-top:10px;">
+        ~40 000 – 70 000 ₽
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 08 АНТИХРОМ ══════════════ -->
+<section data-screen-label="08 Антихром" style="position:relative;">
+  <!-- Subtle car image background -->
+  <div style="position:absolute;inset:0;overflow:hidden;">
+    <img src="uploads/Screenshot_20260514_104114_Chrome.jpg"
+      style="position:absolute;right:-40px;top:-30px;
+        width:68%;height:110%;
+        object-fit:contain;object-position:right center;
+        mix-blend-mode:luminosity;opacity:0.35;">
+    <div style="position:absolute;inset:0;
+      background:linear-gradient(to right, var(--bg) 35%, rgba(10,10,12,0.6) 65%, rgba(10,10,12,0.4) 100%);"></div>
+  </div>
+
+  <div style="position:absolute;top:var(--pad-y);left:var(--pad-x);
+    display:flex;flex-direction:column;gap:32px;max-width:740px;">
+    <div class="lbl-line lbl">Антихром · Блэкаут</div>
+    <div style="font-size:var(--type-title);font-weight:200;
+      letter-spacing:-0.02em;line-height:1.1;">
+      Убрать хром<br>в чёрный
+    </div>
+    <div style="font-size:var(--type-small);font-weight:300;
+      color:var(--muted);line-height:1.6;max-width:560px;">
+      Хромированные молдинги заменяются матово-чёрной
+      или глянцево-чёрной плёнкой. Эффект — агрессивный,
+      целостный «всё-в-чёрном» образ. Обязательная опция
+      при серой оклейке кузова.
+    </div>
+  </div>
+
+  <!-- elements list + cost -->
+  <div style="position:absolute;bottom:var(--pad-y);left:var(--pad-x);
+    display:flex;gap:24px;align-items:flex-start;">
+    <div style="background:var(--bg3);border:1px solid var(--muted2);
+      border-radius:14px;padding:32px 44px;min-width:400px;">
+      <div class="lbl" style="margin-bottom:20px;">Элементы под оклейку</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:var(--type-small);font-weight:300;color:var(--muted);
+          display:flex;align-items:center;gap:14px;">
+          <div style="width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;"></div>
+          Рамки окон и молдинги дверей
+        </div>
+        <div style="font-size:var(--type-small);font-weight:300;color:var(--muted);
+          display:flex;align-items:center;gap:14px;">
+          <div style="width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;"></div>
+          Решётка радиатора / передние акценты
+        </div>
+        <div style="font-size:var(--type-small);font-weight:300;color:var(--muted);
+          display:flex;align-items:center;gap:14px;">
+          <div style="width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;"></div>
+          Зеркала заднего вида
+        </div>
+        <div style="font-size:var(--type-small);font-weight:300;color:var(--muted);
+          display:flex;align-items:center;gap:14px;">
+          <div style="width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;"></div>
+          Хром задней части / фонарей
+        </div>
+        <div style="font-size:var(--type-small);font-weight:300;color:var(--muted);
+          display:flex;align-items:center;gap:14px;">
+          <div style="width:8px;height=8px;background:var(--gold);border-radius:50%;flex-shrink:0;"></div>
+          Пороги, накладки стоек
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div style="background:var(--bg3);border:1px solid var(--muted2);
+        border-radius:14px;padding:28px 40px;">
+        <div class="lbl" style="margin-bottom:10px;">Матовый чёрный</div>
+        <div style="font-size:var(--type-sub);font-weight:300;">
+          25 000 – 45 000 <span style="font-size:22px;color:var(--muted);">₽</span>
+        </div>
+        <div style="font-size:20px;color:var(--muted);margin-top:4px;">Агрессивно, молодёжно</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--gold);
+        border-radius:14px;padding:28px 40px;">
+        <div class="lbl" style="margin-bottom:10px;">Глянцевый чёрный</div>
+        <div style="font-size:var(--type-sub);font-weight:300;">
+          30 000 – 55 000 <span style="font-size:22px;color:var(--muted);">₽</span>
+        </div>
+        <div style="font-size:20px;color:var(--muted);margin-top:4px;">Сдержанно, премиально</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 09 МАТ vs ГЛЯНЕЦ ══════════════ -->
+<section data-screen-label="09 Мат vs Глянец">
+  <div style="display:flex;flex-direction:column;
+    padding:var(--pad-y) var(--pad-x);height:100%;gap:var(--gap);">
+    <div class="lbl-line lbl">Выбор покрытия</div>
+    <div style="font-size:var(--type-title);font-weight:200;
+      letter-spacing:-0.02em;margin-bottom:8px;">
+      Матовый vs Глянцевый
+    </div>
+
+    <div class="two-col" style="flex:1;min-height:0;">
+      <div class="pros-card" style="border:1px solid var(--muted2);">
+        <div style="display:flex;align-items:center;gap:24px;">
+          <div style="width:56px;height:56px;background:oklch(30% 0.005 240);
+            border-radius:10px;flex-shrink:0;"></div>
+          <h3>Матовый</h3>
+        </div>
+        <ul class="pros-list">
+          <li>Царапины и микросвили не видны при эксплуатации</li>
+          <li>Не требует частой полировки, терпимее к мойке</li>
+          <li>Выглядит дороже и эксклюзивнее на тёмных цветах</li>
+          <li>Тактильно приятен: бархатистая поверхность</li>
+          <li>Хуже восстанавливается от глубоких царапин</li>
+          <li style="color:oklch(55% 0.12 25);">Дороже глянца на 10–20%</li>
+        </ul>
+      </div>
+
+      <div class="pros-card" style="border:1px solid var(--gold);">
+        <div style="display:flex;align-items:center;gap:24px;">
+          <div style="width:56px;height:56px;
+            background:linear-gradient(135deg, oklch(80% 0.005 240) 0%, oklch(55% 0.010 240) 50%, oklch(40% 0.008 240) 100%);
+            border-radius:10px;flex-shrink:0;"></div>
+          <h3>Глянцевый</h3>
+        </div>
+        <ul class="pros-list">
+          <li>Усиливает насыщенность и глубину цвета</li>
+          <li>Полиуретан (PPF) самовосстанавливается от лёгких царапин</li>
+          <li>Лучше фотографируется, более эффектен на видео</li>
+          <li>Дешевле матового аналога</li>
+          <li>На тёмных цветах заметны отпечатки пальцев, вода</li>
+          <li style="color:var(--muted);">Требует частой мойки и ухода</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="font-size:22px;font-weight:300;color:var(--muted);
+      border-top:1px solid var(--muted2);padding-top:22px;">
+      Рекомендация для L6: <span style="color:var(--gold);">матовый серый или матовый зелёный + глянцевый антихром</span>
+      — оптимальное сочетание по уходу и внешнему виду
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 10 ЦЕНЫ ══════════════ -->
+<section data-screen-label="10 Цены">
+  <div style="display:flex;flex-direction:column;
+    padding:var(--pad-y) var(--pad-x);height:100%;gap:var(--gap);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+      <div>
+        <div class="lbl-line lbl" style="margin-bottom:16px;">Ориентир стоимости</div>
+        <div style="font-size:var(--type-title);font-weight:200;letter-spacing:-0.02em;">
+          Цены в Москве — Lixiang L6
+        </div>
+      </div>
+      <div style="font-size:22px;font-weight:300;color:var(--muted);text-align:right;">
+        Данные актуальны на май 2026<br>
+        Площадь кузова L6 ≈ 18–20 м²
+      </div>
+    </div>
+
+    <table class="price-table" style="flex:1;">
+      <thead>
+        <tr>
+          <th style="width:30%;">Услуга</th>
+          <th style="width:22%;">Что включено</th>
+          <th style="width:20%;">Плёнка</th>
+          <th style="width:28%;">Стоимость</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="hi-row">
+          <td>
+            <div style="font-size:var(--type-small);font-weight:400;margin-bottom:4px;">Полный кузов, виниловая</div>
+            <div class="note">Смена цвета, защита ЛКП</div>
+          </td>
+          <td><div class="note">Весь кузов снаружи</div></td>
+          <td><div class="note">Oracal 970 · IRISTEK · Hexis</div></td>
+          <td>
+            <div class="price-val">190 000 – 260 000 ₽</div>
+            <div class="note">Мат: от 205 000 · Глянец: от 190 000</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div style="font-size:var(--type-small);font-weight:400;margin-bottom:4px;">Полный кузов, PPF цветной</div>
+            <div class="note">Смена цвета + защита от сколов</div>
+          </td>
+          <td><div class="note">Весь кузов снаружи</div></td>
+          <td><div class="note">IRISTEK PPF · STEK Dyno Colors</div></td>
+          <td>
+            <div class="price-val">330 000 – 480 000 ₽</div>
+            <div class="note">Срок службы до 10 лет</div>
+          </td>
+        </tr>
+        <tr class="hi-row">
+          <td>
+            <div style="font-size:var(--type-small);font-weight:400;margin-bottom:4px;">Двухтон (крыша + стойки)</div>
+            <div class="note">Частичная оклейка верхней части</div>
+          </td>
+          <td><div class="note">Крыша, стойки, зеркала</div></td>
+          <td><div class="note">Vinyl / PPF матовый</div></td>
+          <td>
+            <div class="price-val">45 000 – 85 000 ₽</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div style="font-size:var(--type-small);font-weight:400;margin-bottom:4px;">Антихром — блэкаут</div>
+            <div class="note">Замена хрома на чёрный</div>
+          </td>
+          <td><div class="note">Молдинги, рамки, зеркала</div></td>
+          <td><div class="note">Vinyl Gloss / Matte Black</div></td>
+          <td>
+            <div class="price-val">30 000 – 65 000 ₽</div>
+          </td>
+        </tr>
+        <tr class="hi-row">
+          <td>
+            <div style="font-size:var(--type-small);font-weight:400;margin-bottom:4px;">Защита передней части</div>
+            <div class="note">Зоны риска: прозрачная PPF</div>
+          </td>
+          <td><div class="note">Капот, бамперы, крылья</div></td>
+          <td><div class="note">STEK DYNOshield · Suntek Ultra</div></td>
+          <td>
+            <div class="price-val">95 000 – 175 000 ₽</div>
+            <div class="note">Зависит от площади покрытия</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div style="font-size:var(--type-small);font-weight:400;margin-bottom:4px;">Керамика на плёнку</div>
+            <div class="note">Дополнительная защита покрытия</div>
+          </td>
+          <td><div class="note">Весь кузов</div></td>
+          <td><div class="note">Gtechniq EXO · CanCoat Pro</div></td>
+          <td>
+            <div class="price-val">40 000 – 70 000 ₽</div>
+            <div class="note">Рекомендуется после оклейки</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="font-size:20px;font-weight:300;color:var(--muted);
+      border-top:1px solid var(--muted2);padding-top:18px;">
+      Студии с опытом работы по Lixiang в Москве:
+      <span style="color:var(--text);">
+        Okleyka.pro (Ташкентская) · Студия27 (Варшавское ш.) · CarEngineering · Mirax Detailing · ProArmor (Ташкентская 28с1)
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 11 ИТОГ ══════════════ -->
+<section data-screen-label="11 Итог" style="position:relative;overflow:hidden;">
+  <!-- Subtle background car image -->
+  <div style="position:absolute;inset:0;overflow:hidden;">
+    <img src="uploads/Screenshot_20260514_104120_Chrome.jpg"
+      style="position:absolute;right:0;top:0;
+        width:60%;height:100%;
+        object-fit:contain;object-position:right center;
+        mix-blend-mode:luminosity;opacity:0.2;">
+    <div style="position:absolute;inset:0;
+      background:linear-gradient(to right, var(--bg) 45%, rgba(10,10,12,0.85) 100%);"></div>
+  </div>
+
+  <div style="position:absolute;top:var(--pad-y);left:var(--pad-x);">
+    <div class="lbl-line lbl" style="margin-bottom:32px;">Итог и рекомендации</div>
+    <div style="font-size:var(--type-title);font-weight:200;
+      letter-spacing:-0.02em;line-height:1.1;margin-bottom:56px;">
+      Топ-3 варианта для вашего L6
+    </div>
+  </div>
+
+  <div style="position:absolute;top:380px;left:var(--pad-x);
+    display:flex;flex-direction:column;gap:14px;max-width:940px;">
+
+    <div style="display:flex;align-items:flex-start;gap:32px;">
+      <div class="rec-num" style="font-size:78px;line-height:1;">1</div>
+      <div style="padding-top:10px;">
+        <div style="font-size:36px;font-weight:400;margin-bottom:8px;">
+          Серый матовый + Антихром
+        </div>
+        <div style="font-size:22px;font-weight:300;color:var(--muted);
+          line-height:1.45;max-width:700px;">
+          Эталонный выбор для L6. Современно, сдержанно, близко к
+          заводской палитре «Серый слон». Антихром завершает образ.
+          <span style="color:var(--gold);">~210 000 – 325 000 ₽</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="width:100%;height:1px;background:var(--muted2);"></div>
+
+    <div style="display:flex;align-items:flex-start;gap:32px;">
+      <div class="rec-num" style="font-size:78px;line-height:1;">2</div>
+      <div style="padding-top:10px;">
+        <div style="font-size:36px;font-weight:400;margin-bottom:8px;">
+          Тёмно-зелёный матовый
+        </div>
+        <div style="font-size:22px;font-weight:300;color:var(--muted);
+          line-height:1.45;max-width:700px;">
+          Трендовый цвет 2025–26. Редкость на дорогах, выглядит дорого
+          особенно в матовом исполнении на крупном кузове L6.
+          <span style="color:var(--gold);">~205 000 – 300 000 ₽</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="width:100%;height:1px;background:var(--muted2);"></div>
+
+    <div style="display:flex;align-items:flex-start;gap:32px;">
+      <div class="rec-num" style="font-size:78px;line-height:1;">3</div>
+      <div style="padding-top:10px;">
+        <div style="font-size:36px;font-weight:400;margin-bottom:8px;">
+          Чёрная крыша + Серебристый кузов
+        </div>
+        <div style="font-size:22px;font-weight:300;color:var(--muted);
+          line-height:1.45;max-width:700px;">
+          Двухтон с максимальным контрастом. Серебро кузова
+          контрастирует с чёрными дисками и крышей.
+          Спортивный образ без лишней яркости.
+          <span style="color:var(--gold);">~235 000 – 345 000 ₽</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom note -->
+  <div style="position:absolute;bottom:var(--pad-y);left:var(--pad-x);right:var(--pad-x);
+    display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid var(--muted2);padding-top:24px;">
+    <div style="font-size:22px;font-weight:300;color:var(--muted);">
+      Важно: при смене цвета на 30%+ требуется внесение изменений в ПТС
+    </div>
+    <div style="font-size:22px;font-weight:300;color:var(--muted);">
+      Срок оклейки Lixiang L6: <span style="color:var(--text);">3–5 рабочих дней</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 12 ПРИМЕРЫ ОКЛЕЙКИ ══════════════ -->
+<section data-screen-label="12 Примеры" id="gallery-section"
+  style="background:#0a0a0c;color:#f0eeea;font-family:'Barlow','Helvetica Neue',Helvetica,sans-serif;
+         width:100%;height:100%;overflow:hidden;position:relative;">
+
+  <!-- ─── LEFT: Car Viewer ─── -->
+  <!-- GALLERY INNER -->
+  <div style="display:flex;flex-direction:column;height:100%;padding:52px 80px 44px;gap:28px;">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-shrink:0;">
+      <div>
+        <div class="lbl-line lbl" style="margin-bottom:14px;">Как это выглядит · Lixiang L6</div>
+        <div style="font-size:58px;font-weight:200;letter-spacing:-0.025em;line-height:1.0;">
+          Примеры оклейки
+        </div>
+      </div>
+      <div style="font-size:18px;font-weight:300;color:rgba(255,255,255,0.32);
+        text-align:right;line-height:1.65;">
+        ★ Серебристый — реальные фото с реального авто<br>
+        Остальные — наглядная визуализация на базе вашего L6
+      </div>
+    </div>
+
+    <!-- 3×2 Photo Grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;
+      grid-template-rows:1fr 1fr;gap:14px;flex:1;min-height:0;">
+
+      <!-- ── Card 1: Silver — REAL PHOTO ── -->
+      <div style="border-radius:14px;overflow:hidden;position:relative;
+        background:#d8d8d6;isolation:isolate;">
+        <img src="https://axfilm.oss-cn-shanghai.aliyuncs.com/uploads/20241015/b84c489d29c93b66aed2fc062bd7c1de.jpg"
+          style="position:absolute;inset:0;width:100%;height:100%;
+            object-fit:cover;object-position:center;">
+        <div style="position:absolute;inset:0;
+          background:linear-gradient(to top,rgba(0,0,0,0.80) 0%,rgba(0,0,0,0) 55%);"></div>
+        <!-- real badge -->
+        <div style="position:absolute;top:14px;left:14px;">
+          <span style="background:oklch(72% 0.10 72);color:#08080a;font-family:'Barlow',sans-serif;
+            font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;
+            padding:5px 12px;border-radius:100px;">✓ Реальное фото</span>
+        </div>
+        <div style="position:absolute;bottom:18px;left:18px;right:14px;">
+          <div style="font-size:21px;font-weight:500;color:#fff;margin-bottom:4px;">Серебристый глянцевый</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);">
+            AXFilm 亚力山大银 · реальная оклейка Lixiang L6 · 190–260 тыс. ₽
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Card 2: Grey — CSS simulation ── -->
+      <div style="border-radius:14px;overflow:hidden;position:relative;
+        background:#ebebea;isolation:isolate;">
+        <img src="uploads/Screenshot_20260514_104117_Chrome.jpg"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+        <!-- screen blend overlay: black car → grey -->
+        <div style="position:absolute;inset:0;
+          background:rgba(128,142,152,0.56);mix-blend-mode:screen;pointer-events:none;"></div>
+        <div style="position:absolute;inset:0;
+          background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0) 52%);"></div>
+        <div style="position:absolute;top:14px;left:14px;">
+          <span style="background:rgba(255,255,255,0.14);backdrop-filter:blur(8px);
+            color:rgba(255,255,255,0.75);font-family:'Barlow',sans-serif;
+            font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;
+            padding:5px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);">Визуализация</span>
+        </div>
+        <div style="position:absolute;bottom:18px;left:18px;right:14px;">
+          <div style="font-size:21px;font-weight:500;color:#fff;margin-bottom:4px;">Серый матовый</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);">
+            KPMF Stone Grey · аналог EH04 Metal Grey · 205–280 тыс. ₽
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Card 3: Dark Green — CSS simulation ── -->
+      <div style="border-radius:14px;overflow:hidden;position:relative;
+        background:#e8ebe8;isolation:isolate;">
+        <img src="uploads/Screenshot_20260514_104117_Chrome.jpg"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+        <div style="position:absolute;inset:0;
+          background:rgba(18,105,58,0.64);mix-blend-mode:screen;pointer-events:none;"></div>
+        <div style="position:absolute;inset:0;
+          background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0) 52%);"></div>
+        <div style="position:absolute;top:14px;left:14px;">
+          <span style="background:rgba(255,255,255,0.14);backdrop-filter:blur(8px);
+            color:rgba(255,255,255,0.75);font-family:'Barlow',sans-serif;
+            font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;
+            padding:5px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);">Визуализация</span>
+        </div>
+        <div style="position:absolute;bottom:18px;left:18px;right:14px;">
+          <div style="font-size:21px;font-weight:500;color:#fff;margin-bottom:4px;">Тёмно-зелёный матовый</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);">
+            KPMF Forest Green · K75479 · 205–300 тыс. ₽
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Card 4: Dark Purple — CSS simulation ── -->
+      <div style="border-radius:14px;overflow:hidden;position:relative;
+        background:#e8e6ee;isolation:isolate;">
+        <img src="uploads/Screenshot_20260514_104123_Chrome.jpg"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+        <div style="position:absolute;inset:0;
+          background:rgba(90,22,160,0.62);mix-blend-mode:screen;pointer-events:none;"></div>
+        <div style="position:absolute;inset:0;
+          background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0) 52%);"></div>
+        <div style="position:absolute;top:14px;left:14px;">
+          <span style="background:rgba(255,255,255,0.14);backdrop-filter:blur(8px);
+            color:rgba(255,255,255,0.75);font-family:'Barlow',sans-serif;
+            font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;
+            padding:5px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);">Визуализация</span>
+        </div>
+        <div style="position:absolute;bottom:18px;left:18px;right:14px;">
+          <div style="font-size:21px;font-weight:500;color:#fff;margin-bottom:4px;">Тёмно-фиолетовый глянец</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);">
+            KPMF Deep Purple · K75501 · 190–280 тыс. ₽
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Card 5: Two-tone — CSS simulation ── -->
+      <div style="border-radius:14px;overflow:hidden;position:relative;
+        background:#ebebea;isolation:isolate;">
+        <img src="uploads/Screenshot_20260514_104117_Chrome.jpg"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+        <!-- Gradient screen: top = black (no change), bottom = silver -->
+        <div style="position:absolute;inset:0;
+          background:linear-gradient(to bottom,
+            rgba(5,5,8,0.0) 0%,
+            rgba(5,5,8,0.0) 42%,
+            rgba(152,168,178,0.60) 42%,
+            rgba(152,168,178,0.60) 100%);
+          mix-blend-mode:screen;pointer-events:none;"></div>
+        <div style="position:absolute;inset:0;
+          background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0) 52%);"></div>
+        <!-- divider line hint -->
+        <div style="position:absolute;top:42%;left:14px;right:14px;height:1px;
+          background:rgba(255,255,255,0.18);"></div>
+        <div style="position:absolute;top:14px;left:14px;">
+          <span style="background:rgba(255,255,255,0.14);backdrop-filter:blur(8px);
+            color:rgba(255,255,255,0.75);font-family:'Barlow',sans-serif;
+            font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;
+            padding:5px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);">Визуализация</span>
+        </div>
+        <div style="position:absolute;bottom:18px;left:18px;right:14px;">
+          <div style="font-size:21px;font-weight:500;color:#fff;margin-bottom:4px;">Двухтон · Чёрная крыша</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);">
+            Крыша чёрная + Серебристый кузов · 235–345 тыс. ₽
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Card 6: Anti-chrome — CSS simulation ── -->
+      <div style="border-radius:14px;overflow:hidden;position:relative;
+        background:#111115;isolation:isolate;">
+        <img src="uploads/Screenshot_20260514_104120_Chrome.jpg"
+          style="position:absolute;inset:0;width:100%;height:100%;
+            object-fit:contain;object-position:center;
+            filter:brightness(0.72) contrast(1.15) saturate(0.7);">
+        <!-- Dark overlay to simulate blacked-out trim -->
+        <div style="position:absolute;inset:0;
+          background:rgba(0,0,0,0.18);mix-blend-mode:multiply;pointer-events:none;"></div>
+        <div style="position:absolute;inset:0;
+          background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0) 52%);"></div>
+        <div style="position:absolute;top:14px;left:14px;">
+          <span style="background:rgba(255,255,255,0.14);backdrop-filter:blur(8px);
+            color:rgba(255,255,255,0.75);font-family:'Barlow',sans-serif;
+            font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;
+            padding:5px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.18);">Визуализация</span>
+        </div>
+        <div style="position:absolute;bottom:18px;left:18px;right:14px;">
+          <div style="font-size:21px;font-weight:500;color:#fff;margin-bottom:4px;">Антихром блэкаут</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);">
+            Молдинги / рамки / зеркала → матовый чёрный · +30–65 тыс. ₽
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+  </div><!-- /inner -->
+</section>
+
+</deck-stage>
+</body>
+</html>
+    align-items:center;justify-content:center;background:#0c0c10;overflow:hidden;">
+
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,#14141c 0%,#080809 100%);"></div>
+
+    <!-- View tabs -->
+    <div id="cfg-tabs" style="position:absolute;top:38px;left:50%;transform:translateX(-50%);
+      display:flex;gap:0;background:rgba(255,255,255,0.07);border-radius:100px;
+      padding:5px;z-index:10;white-space:nowrap;"></div>
+
+    <!-- Canvas card -->
+    <div style="position:relative;z-index:5;background:#f6f6f4;border-radius:18px;
+      box-shadow:0 28px 90px rgba(0,0,0,0.75);overflow:hidden;">
+      <canvas id="cfg-canvas" width="860" height="530"
+        style="display:block;transition:opacity 0.22s ease;"></canvas>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="cfg-loading" style="position:absolute;inset:0;z-index:20;display:none;
+      align-items:center;justify-content:center;flex-direction:column;gap:20px;
+      background:rgba(8,8,10,0.60);backdrop-filter:blur(5px);">
+      <div style="width:46px;height:46px;border:3px solid rgba(255,255,255,0.10);
+        border-top-color:oklch(72% 0.10 72);border-radius:50%;
+        animation:cfg-spin 0.65s linear infinite;"></div>
+      <div style="font-size:17px;font-weight:300;letter-spacing:0.12em;
+        color:rgba(255,255,255,0.4);text-transform:uppercase;">Применяю плёнку…</div>
+    </div>
+
+    <!-- Bottom config label -->
+    <div id="cfg-car-label" style="position:absolute;bottom:34px;left:0;right:0;text-align:center;
+      font-size:17px;font-weight:300;letter-spacing:0.10em;color:rgba(255,255,255,0.32);
+      text-transform:uppercase;z-index:5;"></div>
+  </div>
+
+  <!-- ─── RIGHT: Config Panel ─── -->
+  <div id="cfg-right" style="flex:1;display:flex;flex-direction:column;
+    padding:50px 56px 42px;gap:26px;border-left:1px solid rgba(255,255,255,0.07);overflow:hidden;">
+
+    <!-- Header -->
+    <div style="flex-shrink:0;">
+      <div style="font-size:12px;font-weight:500;letter-spacing:0.20em;text-transform:uppercase;
+        color:oklch(72% 0.10 72);display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <div style="width:30px;height:2px;background:oklch(72% 0.10 72);flex-shrink:0;"></div>
+        Конфигуратор оклейки
+      </div>
+      <div style="font-size:50px;font-weight:200;letter-spacing:-0.025em;line-height:1.0;">
+        Подберите<br>плёнку
+      </div>
+    </div>
+
+    <!-- COLOR -->
+    <div style="flex-shrink:0;">
+      <div class="cfg-slbl">Цвет кузова</div>
+      <div id="cfg-colors-row" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;"></div>
+    </div>
+
+    <!-- FINISH -->
+    <div style="flex-shrink:0;">
+      <div class="cfg-slbl">Тип покрытия</div>
+      <div id="cfg-finish-row" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- FILM -->
+    <div style="flex-shrink:0;">
+      <div class="cfg-slbl">Материал</div>
+      <div id="cfg-film-row" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- CHROME -->
+    <div style="flex-shrink:0;">
+      <div class="cfg-slbl">Хром</div>
+      <div id="cfg-chrome-row" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- TWO-TONE -->
+    <div style="flex-shrink:0;">
+      <div class="cfg-slbl">Двухтон</div>
+      <div id="cfg-twotone-row" style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- PRICE -->
+    <div id="cfg-price-card" style="background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.10);border-radius:14px;
+      padding:24px 30px;margin-top:auto;flex-shrink:0;">
+      <div style="font-size:12px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;
+        color:oklch(72% 0.10 72);margin-bottom:10px;">Ориентировочная стоимость</div>
+      <div id="cfg-price-val" style="font-size:44px;font-weight:200;line-height:1.05;
+        letter-spacing:-0.02em;transition:opacity 0.2s;">Выберите вариант</div>
+      <div id="cfg-price-sub" style="font-size:16px;font-weight:300;
+        color:rgba(255,255,255,0.35);margin-top:8px;">Москва · Lixiang L6 · май 2026</div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes cfg-spin { to { transform:rotate(360deg); } }
+    .cfg-slbl {
+      font-size:12px;font-weight:500;letter-spacing:0.16em;
+      text-transform:uppercase;color:rgba(255,255,255,0.36);
+    }
+    .cfg-obtn {
+      font-family:'Barlow',sans-serif;font-size:18px;font-weight:400;
+      padding:9px 22px;border-radius:100px;border:1px solid rgba(255,255,255,0.14);
+      background:transparent;color:rgba(255,255,255,0.52);cursor:pointer;
+      transition:all 0.16s;letter-spacing:0.03em;white-space:nowrap;
+    }
+    .cfg-obtn:hover { border-color:rgba(255,255,255,0.36);color:#f0eeea; }
+    .cfg-obtn.active {
+      background:rgba(255,255,255,0.11);border-color:rgba(255,255,255,0.44);color:#f0eeea;
+    }
+    .cfg-cdot {
+      width:46px;height:46px;border-radius:50%;border:3px solid transparent;
+      cursor:pointer;transition:all 0.16s;box-shadow:0 2px 10px rgba(0,0,0,0.45);
+    }
+    .cfg-cdot:hover { transform:scale(1.10); }
+    .cfg-cdot.active { border-color:oklch(72% 0.10 72);transform:scale(1.15); }
+    .cfg-clabel {
+      font-size:13px;font-weight:300;color:rgba(255,255,255,0.40);
+      text-align:center;max-width:68px;line-height:1.3;letter-spacing:0.01em;
+    }
+    .cfg-tab {
+      font-family:'Barlow',sans-serif;font-size:17px;font-weight:400;
+      padding:8px 20px;border-radius:100px;border:none;background:transparent;
+      color:rgba(255,255,255,0.44);cursor:pointer;transition:all 0.16s;
+    }
+    .cfg-tab.active { background:rgba(255,255,255,0.14);color:#f0eeea; }
+    .cfg-tab:hover  { color:#f0eeea; }
+  </style>
+
+  <script>
+  (function cfgInit(){
+
+    /* ── CONSTANTS ─────────────────────────────── */
+    var COLORS = [
+      { id:'black',  label:'Чёрный',      bg:'#1e1e22', border:'rgba(255,255,255,0.22)', h:0,   s:0,    l:0 },
+      { id:'silver', label:'Серебристый', bg:'#9baab5', h:210, s:0.18, l:0.70 },
+      { id:'grey',   label:'Серый',       bg:'#525f6b', h:215, s:0.14, l:0.42 },
+      { id:'green',  label:'Зелёный',     bg:'#1d4c35', h:155, s:0.70, l:0.26 },
+      { id:'purple', label:'Фиолетовый',  bg:'#2e1c52', h:278, s:0.68, l:0.24 },
+      { id:'white',  label:'Белый',       bg:'#e4e4e2', border:'rgba(0,0,0,0.14)', h:210, s:0.06, l:0.94 },
+    ];
+
+    var VIEWS = [
+      { label:'Сбоку'   },
+      { label:'Спереди' },
+      { label:'Сзади'   },
+    ];
+
+    var PRICES = {
+      vinyl_gloss:{ min:190000, max:260000, brand:'Oracal 970 · IRISTEK · Hexis', days:'3–5 дней' },
+      vinyl_matte:{ min:205000, max:280000, brand:'Oracal 970 · IRISTEK · Hexis', days:'3–5 дней' },
+      ppf_gloss:  { min:330000, max:480000, brand:'IRISTEK PPF · STEK Dyno Colors', days:'5–8 дней' },
+      ppf_matte:  { min:350000, max:510000, brand:'IRISTEK PPF · STEK Dyno Colors', days:'5–8 дней' },
+      twotone_add:{ min:45000,  max:85000  },
+      chrome_add: { min:30000,  max:65000  },
+    };
+
+    /* ── STATE ─────────────────────────────────── */
+    var S = { colorIdx:0, finish:'gloss', film:'vinyl', antiChrome:false, twoTone:false, viewIdx:0 };
+    var imgCache={}, renderCache={}, cfgReady=false;
+
+    /* ── HSL → RGB ──────────────────────────────── */
+    function hslToRgb(h,s,l){
+      h=((h%360)+360)%360; h/=360;
+      if(s===0){var v=Math.round(l*255);return[v,v,v];}
+      function f(p,q,t){if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
+      var q=l<0.5?l*(1+s):l+s-l*s, p=2*l-q;
+      return[Math.round(f(p,q,h+1/3)*255), Math.round(f(p,q,h)*255), Math.round(f(p,q,h-1/3)*255)];
+    }
+
+    /* ── IMAGE LOAD (base64 — no CORS) ─────────── */
+    function loadImg(idx){
+      var src = (typeof CFG_IMAGES !== 'undefined') ? CFG_IMAGES[idx] : null;
+      if(!src) return Promise.reject('CFG_IMAGES not loaded');
+      if(imgCache[idx]) return Promise.resolve(imgCache[idx]);
+      return new Promise(function(res,rej){
+        var img=new Image();
+        img.onload=function(){imgCache[idx]=img; res(img);};
+        img.onerror=rej;
+        img.src=src;
+      });
+    }
+
+    /* ── CANVAS COMPOSITING RENDER ──────────────── */
+    /*
+     * Strategy: draw photo, then blend a color rectangle on top using
+     * 'screen' composite operation. Screen formula: 1-(1-A)(1-B)
+     * Works great on dark cars — a dark pixel (0.08) + screen(0.55 grey)
+     * → 1-0.92×0.45 = 0.586. Clearly visible grey!
+     * No getImageData needed → zero CORS issues.
+     */
+    function processFrame(vIdx,cIdx,finish,antiChrome,twoTone){
+      var key=[vIdx,cIdx,finish,antiChrome?1:0,twoTone?1:0].join('_');
+      if(renderCache[key]) return Promise.resolve(renderCache[key]);
+
+      var color=COLORS[cIdx];
+      return loadImg(vIdx).then(function(img){
+        var PW=820, PH=Math.round(img.height*PW/img.width);
+        var oc=document.createElement('canvas');
+        oc.width=PW; oc.height=PH;
+        var ctx=oc.getContext('2d');
+
+        /* 1. white bg */
+        ctx.fillStyle='#f5f5f3';
+        ctx.fillRect(0,0,PW,PH);
+
+        /* 2. original car photo */
+        ctx.drawImage(img,0,0,PW,PH);
+
+        /* 3. body color overlay via screen blend */
+        if(color.id!=='black'){
+          var rgb=hslToRgb(color.h, color.s, color.l);
+          /* matte: softer/less saturated overlay; gloss: punchy */
+          var opacity = finish==='matte' ? 0.50 : 0.63;
+
+          ctx.save();
+
+          if(twoTone){
+            /* two-tone: clip to lower 54% — body only, keep roof dark */
+            var roofLine=Math.round(PH*0.46);
+            ctx.beginPath();
+            ctx.rect(0, roofLine, PW, PH-roofLine);
+            ctx.clip();
+          }
+
+          ctx.globalCompositeOperation='screen';
+          ctx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+opacity+')';
+          ctx.fillRect(0,0,PW,PH);
+
+          /* matte texture: very faint white veil kills glossy speculars */
+          if(finish==='matte'){
+            ctx.globalCompositeOperation='source-over';
+            ctx.fillStyle='rgba(255,255,255,0.09)';
+            ctx.fillRect(0,0,PW,PH);
+          }
+
+          ctx.restore();
+        }
+
+        /* 4. antiChrome: multiply darkens chrome (bright achromatic areas) */
+        if(antiChrome){
+          ctx.save();
+          /* multiply: result = base × overlay/255
+           * chrome (200,200,200) × (45,45,50)/255 ≈ (35,35,39) → dark ✓
+           * black body (25,25,25) × (45,45,50)/255 ≈ (4,4,5) → stays dark ✓
+           * white bg is already white — we skip it by blending back:
+           *   after multiply draw white screen on background-region
+           *   but simplest: accept slight bg tint, it's inside a light card anyway */
+          ctx.globalCompositeOperation='multiply';
+          ctx.fillStyle='rgba(42,42,48,0.80)';
+          ctx.fillRect(0,0,PW,PH);
+          ctx.restore();
+          /* restore near-white background pixels: overlay screen(white) */
+          ctx.save();
+          ctx.globalCompositeOperation='lighten';
+          ctx.fillStyle='rgba(235,235,235,0.70)';
+          ctx.fillRect(0,0,PW,PH);
+          ctx.restore();
+        }
+
+        renderCache[key]=oc; return oc;
+      });
+    }
+
+    /* ── RENDER TO DISPLAY CANVAS ──────────────── */
+    var dCanvas=document.getElementById('cfg-canvas');
+    var loadEl=document.getElementById('cfg-loading');
+    var labelEl=document.getElementById('cfg-car-label');
+    var priceEl=document.getElementById('cfg-price-val');
+    var priceSubEl=document.getElementById('cfg-price-sub');
+
+    function render(){
+      loadEl.style.display='flex';
+      dCanvas.style.opacity='0.45';
+      processFrame(S.viewIdx,S.colorIdx,S.finish,S.antiChrome,S.twoTone)
+        .then(function(proc){
+          /* draw into fixed 860×530 canvas, centered, white bg */
+          dCanvas.width=860; dCanvas.height=530;
+          var ctx=dCanvas.getContext('2d');
+          ctx.fillStyle='#f6f6f4';
+          ctx.fillRect(0,0,860,530);
+          var scale=Math.min(860/proc.width,530/proc.height);
+          var dw=Math.round(proc.width*scale), dh=Math.round(proc.height*scale);
+          var dx=Math.round((860-dw)/2), dy=Math.round((530-dh)/2);
+          ctx.drawImage(proc,dx,dy,dw,dh);
+          dCanvas.style.opacity='1';
+          loadEl.style.display='none';
+          updateLabel(); updatePrice();
+        })
+        .catch(function(err){
+          loadEl.style.display='none';
+          dCanvas.style.opacity='1';
+          console.warn('cfg render err',err);
+        });
+    }
+
+    function updateLabel(){
+      var c=COLORS[S.colorIdx], parts=['Lixiang L6',c.label];
+      if(c.id!=='black'){
+        parts.push(S.finish==='matte'?'Матовый':'Глянцевый');
+        parts.push(S.film==='ppf'?'PPF':'Vinyl');
+      }
+      if(S.antiChrome) parts.push('Антихром');
+      if(S.twoTone&&c.id!=='black') parts.push('Двухтон');
+      labelEl.textContent=parts.join(' · ');
+    }
+
+    function updatePrice(){
+      var c=COLORS[S.colorIdx],isOrig=(c.id==='black');
+      var mn=0,mx=0,brand='',days='';
+      if(!isOrig){
+        var p=PRICES[S.film+'_'+S.finish];
+        mn+=p.min; mx+=p.max; brand=p.brand; days=p.days;
+      }
+      if(S.twoTone&&!isOrig){ mn+=PRICES.twotone_add.min; mx+=PRICES.twotone_add.max; }
+      if(S.antiChrome){ mn+=PRICES.chrome_add.min; mx+=PRICES.chrome_add.max; }
+      if(mn===0){ priceEl.textContent='Выберите вариант'; priceSubEl.textContent='Москва · Lixiang L6 · май 2026'; return; }
+      function fmt(n){return(n/1000).toFixed(0)+'\u202f000';}
+      priceEl.textContent=fmt(mn)+' – '+fmt(mx)+' ₽';
+      var sub='Москва · Lixiang L6 · май 2026';
+      if(brand) sub+=' · '+brand;
+      if(days)  sub+=' · '+days;
+      priceSubEl.textContent=sub;
+    }
+
+    /* ── BUILD UI ───────────────────────────────── */
+
+    /* Tabs */
+    var tabsEl=document.getElementById('cfg-tabs');
+    VIEWS.forEach(function(v,i){
+      var btn=document.createElement('button');
+      btn.className='cfg-tab'+(i===0?' active':'');
+      btn.textContent=v.label;
+      btn.onclick=function(){
+        S.viewIdx=i;
+        tabsEl.querySelectorAll('.cfg-tab').forEach(function(b){b.classList.remove('active');});
+        btn.classList.add('active');
+        render();
+      };
+      tabsEl.appendChild(btn);
+    });
+
+    /* Color dots */
+    var colEl=document.getElementById('cfg-colors-row');
+    COLORS.forEach(function(c,i){
+      var wrap=document.createElement('div');
+      wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;';
+      var dot=document.createElement('div');
+      dot.className='cfg-cdot'+(i===0?' active':'');
+      dot.style.background=c.bg;
+      if(c.border) dot.style.outline='1px solid '+c.border;
+      dot.title=c.label;
+      dot.onclick=function(){
+        S.colorIdx=i;
+        colEl.querySelectorAll('.cfg-cdot').forEach(function(b){b.classList.remove('active');});
+        dot.classList.add('active');
+        render();
+      };
+      var lbl=document.createElement('div');
+      lbl.className='cfg-clabel';
+      lbl.textContent=c.label;
+      wrap.appendChild(dot); wrap.appendChild(lbl);
+      colEl.appendChild(wrap);
+    });
+
+    /* Generic toggle row builder */
+    function buildRow(elId, opts, getVal, setVal){
+      var el=document.getElementById(elId);
+      opts.forEach(function(o){
+        var btn=document.createElement('button');
+        btn.className='cfg-obtn'+(getVal()===o.v?' active':'');
+        btn.textContent=o.t;
+        btn.onclick=function(){
+          setVal(o.v);
+          el.querySelectorAll('.cfg-obtn').forEach(function(b){b.classList.remove('active');});
+          btn.classList.add('active');
+          render();
+        };
+        el.appendChild(btn);
+      });
+    }
+
+    buildRow('cfg-finish-row',
+      [{v:'gloss',t:'Глянцевый'},{v:'matte',t:'Матовый'}],
+      function(){return S.finish;}, function(v){S.finish=v;});
+
+    buildRow('cfg-film-row',
+      [{v:'vinyl',t:'Виниловая'},{v:'ppf',t:'PPF полиуретан'}],
+      function(){return S.film;}, function(v){S.film=v;});
+
+    buildRow('cfg-chrome-row',
+      [{v:false,t:'Оригинал хром'},{v:true,t:'Антихром (чёрный)'}],
+      function(){return S.antiChrome;}, function(v){S.antiChrome=v;});
+
+    buildRow('cfg-twotone-row',
+      [{v:false,t:'Однотон'},{v:true,t:'Тёмная крыша'}],
+      function(){return S.twoTone;}, function(v){S.twoTone=v;});
+
+    /* ── LAZY INIT ──────────────────────────────── */
+    updateLabel(); updatePrice();
+
+    /* deck-stage posts {slideIndexChanged: N} (0-indexed) on every nav.
+       Slide 12 = index 11. Also fire a fallback timer in case message
+       arrives before our listener is ready or is missed. */
+    window.addEventListener('message', function(e){
+      if(e.data && e.data.slideIndexChanged === 11 && !cfgReady){
+        cfgReady = true; render();
+      }
+    });
+    /* Unconditional fallback: fires 900ms after page load.
+       If user is already on slide 12 (e.g. after reload), this catches it. */
+    setTimeout(function(){
+      if(!cfgReady){ cfgReady=true; render(); }
+    }, 900);
+
+  })();
+  </script>
+</section>
+
+</deck-stage>
+</body>
+</html>
